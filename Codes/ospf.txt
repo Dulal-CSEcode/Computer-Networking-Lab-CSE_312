@@ -1,0 +1,45 @@
+(a) Configure OSPF in Router 1
+Router # en
+Router#conf t
+Router(config)#router ospf 10
+Router(config-router)#network 1.0.0.0 0.255.255.255 area 1
+Router(config-router)#network 10.0.0.0 0.255.255.255 area 1
+
+Router(config-router)#network 4.0.0.0 0.255.255.255 area 0
+Router(config-router)# Z (Use Ctrl + Z to save settings)
+
+(b) Configure OSPF in Router 2
+Router # en
+Router#conf t
+Router(config)#router ospf 10
+Router(config-router)#network 1.0.0.0 0.255.255.255 area 1
+Router(config-router)#network 2.0.0.0 0.255.255.255 area 1
+Router(config-router)#network 20.0.0.0 0.255.255.255 area 1
+Router(config-router)# Z (Use Ctrl + Z to save settings)
+
+(c) Configure OSPF in Router 3
+Router # en
+Router#conf t
+Router(config)#router ospf 10
+Router(config-router)#network 2.0.0.0 0.255.255.255 area 2
+Router(config-router)#network 3.0.0.0 0.255.255.255 area 2
+Router(config-router)#network 30.0.0.0 0.255.255.255 area 2
+Router(config-router)# Z (Use Ctrl + Z to save settings)
+
+(d) Configure OSPF in Router 4
+Router # en
+Router#conf t
+Router(config)#router ospf 10
+Router(config-router)#network 3.0.0.0 0.255.255.255 area 2
+Router(config-router)#network 40.0.0.0 0.255.255.255 area 2
+
+Router(config-router)#network 5.0.0.0 0.255.255.255 area 0
+Router(config-router)# Z (Use Ctrl + Z to save settings)
+
+(e) Configure OSPF in Router 0
+Router # en
+Router#conf t
+Router(config)#router ospf 10
+Router(config-router)#network 4.0.0.0 0.255.255.255 area 0
+Router(config-router)#network 5.0.0.0 0.255.255.255 area 0
+Router(config-router)# Z (Use Ctrl + Z to save settings)

@@ -1,0 +1,155 @@
+package com.mycompany.mathematical_operations_tcp_socket_programming;
+
+/**
+ *
+ * @author student_user
+ */
+import java.io.*;
+import java.net.*;
+
+public class MathServer {
+    public static void main(String args[]) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(5000);
+        System.out.println("Server connected at " + serverSocket.getLocalPort());
+        System.out.println("Server is connecting\n");
+        System.out.println("Waiting for the client\n");
+        
+        int clientCount = 0; // To keep track of the number of clients served
+        
+        while (clientCount < 5) { // Server can serve at most 5 clients
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("A new client is connected " + clientSocket);
+            
+            DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
+            DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
+            
+            System.out.println("A new thread is assigning");
+            Thread clientHandlerThread = new ClientHandler(clientSocket, dis, dos);
+            clientHandlerThread.start();
+            
+            clientCount++; // Increment client count
+        }
+        serverSocket.close(); // Close server socket after serving 5 clients
+    }
+}
+
+
+
+
+import java.io.*;
+import java.net.*;
+import java.util.Scanner;
+
+public class MathClient {
+    public static void main(String args[]) throws IOException {
+        try {
+            Socket clientSocket = new Socket("localhost", 5000);
+            System.out.println("Connected at server Handshaking port " + clientSocket.getPort());
+            System.out.println("Client is connecting at Communication Port " + clientSocket.getLocalPort());
+            System.out.println("Client is Connected");
+
+            Scanner scanner = new Scanner(System.in);
+            DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
+            DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
+
+            while (true) {
+                System.out.println("Enter first integer:");
+                int num1 = scanner.nextInt();
+                System.out.println("Enter second integer:");
+                int num2 = scanner.nextInt();
+                System.out.println("Enter operation (Sum, Subtract, Multiplication, Division, Modules, or ENDS to exit):");
+                String operator = scanner.next();
+
+                dos.writeInt(num1); // Send first integer to server
+                dos.writeInt(num2); // Send second integer to server
+                dos.writeUTF(operator); // Send operator to server
+
+                if (operator.equals("ENDS")) {
+                    System.out.println("Closing the connection " + clientSocket);
+                    clientSocket.close();
+                    System.out.println("Connection Closed");
+                    break;
+                }
+
+                int result = dis.readInt(); // Receive result from server
+                System.out.println("Result: " + result);
+            }
+
+            dos.close();
+            dis.close();
+            scanner.close();
+            clientSocket.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+}
+
+
+
+
+
+
+
+class ClientHandler extends Thread {
+
+    final Socket clientSocket;
+    final DataInputStream dis;
+    final DataOutputStream dos;
+
+    public ClientHandler(Socket s, DataInputStream dis, DataOutputStream dos) {
+        this.clientSocket = s;
+        this.dis = dis;
+        this.dos = dos;
+    }
+
+    public void run() {
+        try {
+            while (true) {
+                int num1 = dis.readInt(); // Read first integer from client
+                int num2 = dis.readInt(); // Read second integer from client
+                String operator = dis.readUTF(); // Read operator from client
+
+                int result = 0;
+
+                switch (operator) {
+                    case "Sum":
+                        result = num1 + num2;
+                        break;
+                    case "Subtract":
+                        result = num1 - num2;
+                        break;
+                    case "Multiplication":
+                        result = num1 * num2;
+                        break;
+                    case "Division":
+                        result = num1 / num2;
+                        break;
+                    case "Modules":
+                        result = num1 % num2;
+                        break;
+                    case "ENDS": // Client ends connection
+                        System.out.println("Client " + this.clientSocket + " has ended the connection");
+                        this.clientSocket.close();
+                        return; // End the thread
+                    default:
+                        dos.writeUTF("Invalid operator");
+                        continue; // Continue to listen for next input
+                }
+
+                dos.writeInt(result); // Send result to client
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Closing resources
+                this.dis.close();
+                this.dos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
