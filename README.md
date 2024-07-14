@@ -4,7 +4,7 @@
 Welcome to the Computer Networking Lab repository. This repository contains code, documentation, and resources for various computer networking lab exercises, lab course, and projects.
 <br />
 
-![Networking Lab](networkinglabbanner.png)
+![Networking Lab](networkinglabbanner.jpg)
 
 <br />
 
