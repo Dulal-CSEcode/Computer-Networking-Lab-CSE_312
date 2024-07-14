@@ -152,5 +152,5 @@ Please ensure your code follows the repository's coding standards and includes a
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
 <br/>
-<h2> Thanks for visit my Computer-Networking-Lab-CSE_312 repository.</h2>
-<h3>© All rights reserved by Dulal-CSEcode @2024 © Department of Computer Science and Engineering, GUB </h3>
+<h2 align="center"> Thanks for visit my Computer-Networking-Lab-CSE_312 repository.</h2>
+<h3 align="center">© All rights reserved by Dulal-CSEcode @2024 © Department of Computer Science and Engineering, GUB </h3>
