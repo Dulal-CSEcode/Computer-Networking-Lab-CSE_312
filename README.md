@@ -6,9 +6,6 @@ Welcome to the Computer Networking Lab repository. This repository contains code
 
 ![Networking Lab](networkinglabbanner.jpg)
 
-
-
-
 <br />
 
 ## Table of Contents
